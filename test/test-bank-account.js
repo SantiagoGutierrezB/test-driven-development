@@ -98,7 +98,7 @@ describe('BankAccount', () => {
             let balance2 = 5750.50;
 
             let amount1 = 5049.25;
-            let amount2 = 1000.00;
+            let amount2 = 10000.00;
             
             let bankAccount1 = new BankAccount(balance1);
             let bankAccount2 = new BankAccount(balance2);
