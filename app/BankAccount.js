@@ -10,13 +10,19 @@ class BankAccount {
 
     append(amount) {
         this.balance = parseFloat(amount) >= 0 ? this.balance + parseFloat(amount) : this.balance;
-        this.history.push({transaction: 'append', amount: amount, balance: this.balance}); 
+        // if the amount is negative don't push it to the history
+        if(amount >= 0) {
+            this.history.push({transaction: 'append', amount: amount, balance: this.balance}); 
+        }
         return this.balance;
     }
     
     substract(amount) {
         this.balance = parseFloat(amount) >= 0 ? this.balance - parseFloat(amount) : this.balance;
-        this.history.push({transaction: 'substract', amount: amount, balance: this.balance}); 
+        // if the amount is negative don't push it to the history
+        if(amount >= 0) {
+            this.history.push({transaction: 'substract', amount: amount, balance: this.balance}); 
+        } 
         return this.balance;
     }
     
