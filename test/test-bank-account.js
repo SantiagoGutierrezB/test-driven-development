@@ -13,25 +13,25 @@ describe('BankAccount', () => {
 
     describe('#append', () => {
         let balance = 450750.75;
-        let amount1 = 5049.25;
-        let amount2 = -5049.25;
+        let amount1 = -5049.25;
+        let amount2 = 5049.25;
         let bankAccount = new BankAccount(balance);
         
         it('Should add the amount to an account in case its positive', () => {
-            assert.equal(455800, bankAccount.append(amount1));
-            assert.equal(balance, bankAccount.append(amount2));
+            assert.equal(balance, bankAccount.append(amount1));
+            assert.equal(balance + amount2, bankAccount.append(amount2));
         });
     });
     
     describe('#substract', () => {
         let balance = 450750.75;
-        let amount1 = 5049.25;
-        let amount2 = -5049.25;
+        let amount1 = -5049.25;
+        let amount2 = 5049.25;
         let bankAccount = new BankAccount(balance);
         
         it('Should substract the amount to an account in case its positive', () => {
-            assert.equal(445701.5, bankAccount.substract(amount1));
-            assert.equal(balance, bankAccount.substract(amount2));
+            assert.equal(balance, bankAccount.substract(amount1));
+            assert.equal(balance - amount2, bankAccount.substract(amount2));
         });
     });
     
@@ -47,7 +47,7 @@ describe('BankAccount', () => {
             assert.deepEqual(
                 [{transaction: 'append', amount: amount1, balance: balance + amount1}, 
                 {transaction: 'substract', amount: amount2, balance: balance + amount1 - amount2}],
-                bankAccount.history());
+                bankAccount.getHistory());
         });
     });
     
@@ -67,12 +67,12 @@ describe('BankAccount', () => {
             
             bankAccount1.merge(bankAccount2);
             
-            assert.deepEqual({
-                history: [
+            assert.deepEqual(
+                [
                     {transaction: 'append', amount: amount1, balance: balance1 + amount1},
                     {transaction: 'append', amount: amount2, balance: balance2 + amount2},
-                ]},
-                bankAccount1.history());
+                ],
+                bankAccount1.getHistory());
         });
 
         it('Should add the amount of the second account to the original in case its positive', () => {
@@ -90,7 +90,7 @@ describe('BankAccount', () => {
             
             bankAccount1.merge(bankAccount2);
             
-            assert.deepEqual(bankAccount1.current(), bankAccount1.balance + bankAccount2.balance);
+            assert.equal(bankAccount1.current(), (balance1 + amount1) + (balance2 + amount2));
         });
         
         it('Should substract the amount of the second account to the original in case its negative', () => {
@@ -104,11 +104,11 @@ describe('BankAccount', () => {
             let bankAccount2 = new BankAccount(balance2);
         
             bankAccount1.append(amount1);
-            bankAccount2.append(amount2);
+            bankAccount2.substract(amount2);
             
             bankAccount1.merge(bankAccount2);
             
-            assert.deepEqual(bankAccount1.current(), bankAccount1.balance - bankAccount2.balance);
+            assert.equal(bankAccount1.current(), (balance1 + amount1) + (balance2 - amount2));
         });
     });
     
